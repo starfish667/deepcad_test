@@ -1,1 +1,2 @@
-environment.yml 依赖包的版本冲突由 ai 处理
+- environment.yml 依赖包的版本冲突由 ai 处理
+- ai 教我学会 curl
