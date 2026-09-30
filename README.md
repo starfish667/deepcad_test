@@ -23,7 +23,7 @@ git clone https://github.com/rundiwu/DeepCAD.git
 
 ### 数据与预训练权重
 
-官方仓库不包含数据，需自行下载解压。**以下命令均在 `DeepCAD/` 目录下执行**：
+官方仓库不包含数据，需自行下载解压。
 
 ```bash
 cd DeepCAD
