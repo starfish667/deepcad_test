@@ -1,0 +1,26 @@
+# ---- 官方 DeepCAD 原仓库：不随本仓库分发，用 README 里的 git clone 获取 ----
+DeepCAD/
+
+# ---- 数据 / 权重 / 结果（体积大，不入库）----
+data/
+proj_log/
+*.tar
+*.tar.gz
+*.pth
+*.h5
+*.step
+*.stp
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+
+# ---- 编辑器 / 系统 ----
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

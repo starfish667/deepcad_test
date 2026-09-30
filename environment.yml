@@ -1,0 +1,23 @@
+name: deepcad
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.9
+  - pythonocc-core=7.9.0
+  - pip
+  - numpy=1.23.5
+  - scipy
+  - h5py
+  - trimesh
+  - matplotlib
+  - tqdm
+  - scikit-learn
+  - joblib
+  - tensorboardX
+  - plyfile
+  - pip: 
+      - --extra-index-url https://download.pytorch.org/whl/cu121
+      - torch==2.1.2
+      - torchvision==0.16.2
