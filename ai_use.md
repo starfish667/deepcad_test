@@ -1,2 +1,6 @@
 - environment.yml 依赖包的版本冲突由 ai 处理
-- ai 教我学会 curl
+- ai 提供 bash 指导，主要代替查 manual
+- ai debug show.py 的 segfault
+- ai 辅助解析 json 中 Extrude 的参数以及 reference vector 和 reference plane
+- ai 提供 numpy，csv 指导
+- ai 写了 m1 中数据清洗程序
