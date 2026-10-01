@@ -2,7 +2,7 @@
  - OS: Ubuntu 26.04
  - GPU: NVIDIA RTX 4060 Laptop
  - NVIDIA 驱动 595.91.07
- - CUDA 12.1
+ - CUDA 12.8
 
 ### 安装
 ```bash
