@@ -6,6 +6,7 @@ channels:
 dependencies:
   - python=3.9
   - pythonocc-core=7.9.0
+  - pyqt=5.15
   - pip
   - numpy=1.23.5
   - scipy
