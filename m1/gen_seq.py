@@ -23,12 +23,6 @@ def _xy(p):
     return None if not p else (p["x"], p["y"])
 
 def _close(a, b, atol=1e-8, rtol=1e-5):
-    """两点是否视为重合。
-
-    容差对齐官方的 np.allclose 默认值(atol=1e-8, rtol=1e-5)。
-    json 里相邻曲线的公共端点可能存在 ~1e-9 米的微小差异，
-    容差太严(比如 1e-9)会把正常的环误判成断链。
-    """
     if a is None or b is None:
         return False
     return (abs(a[0] - b[0]) <= atol + rtol * abs(b[0]) and
@@ -41,7 +35,6 @@ def _cross(a, b):
     return a[0] * b[1] - a[1] * b[0]
 
 class Curve(object):
-    """一条曲线（可反转方向），字段与 json 对应"""
 
     def __init__(self, src):
         self.src = src
@@ -94,7 +87,6 @@ class Curve(object):
         return (0.0, 0.0)
 
 def _is_chain(cs):
-    """这组曲线是否首尾相接并闭合"""
     if not cs:
         return False
     n = len(cs)
@@ -106,7 +98,6 @@ def _is_chain(cs):
     return True
 
 def _walk_chain(curves):
-    """图遍历强接：从最左下起点出发，逐段找能接上的曲线（不够就反向）。接不上返回 None。"""
     cs = [Curve(c.src) for c in curves]
     n = len(cs)
     if n == 0:
@@ -134,11 +125,6 @@ def _walk_chain(curves):
     return order if _is_chain(order) else None
 
 def reorder_loop(curves):
-    """从左下角起点开始 + 逆时针。
-
-    先跑官方那套启发式（与官方一致）；如果结果仍然断链，
-    再用图遍历强接（官方启发式遇到顺序很乱的环会失败）。
-    """
     out = _reorder_loop_official(curves)
     if _is_chain(out):
         return out
@@ -159,7 +145,6 @@ def _ensure_ccw(curves):
     return curves
 
 def _reorder_loop_official(curves):
-    """从左下角起点开始 + 逆时针（移植自官方 cadlib/sketch.py）"""
     if len(curves) <= 1:
         return curves
     start_idx, sx, sy = 0, float("inf"), float("inf")
@@ -197,7 +182,6 @@ def loop_bbox_min(curves):
     return (min(xs), min(ys)) if xs else (0.0, 0.0)
 
 def reorder_profile(loops):
-    """多个环按包围盒左下角排序（先 x 后 y）"""
     if len(loops) <= 1:
         return loops
     return sorted(loops, key=lambda cv: loop_bbox_min(cv))
@@ -255,7 +239,6 @@ def fmt_vec(v, nd=3):
     return "({:.{n}f}, {:.{n}f}, {:.{n}f})".format(f("x"), f("y"), f("z"), n=nd)
 
 def extrude_block(ent, scale, ents):
-    """ExtrudeFeature -> 若干行（参数 + 草图平面 transform）"""
     op = OP_SHORT.get(ent.get("operation"), ent.get("operation"))
     et = EXT_SHORT.get(ent.get("extent_type"), ent.get("extent_type"))
 

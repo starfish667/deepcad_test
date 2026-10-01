@@ -23,7 +23,6 @@ def _ang(p, c):
     return _norm(math.atan2(p[1] - c[1], p[0] - c[0]))
 
 def check_loop(curves):
-    """返回 [] 表示没问题，否则返回问题列表"""
     errs = []
     if not curves:
         return ["空环"]
@@ -52,12 +51,6 @@ def check_loop(curves):
     return errs
 
 def check_extrudes(ents):
-    """检查拉伸特征是否引用了有效剖面
-
-    实测有两类真坏的情况：
-      - Extrude 的 profiles 是空列表 [] -> 建实体时直接抛 IndexError
-      - Extrude 引用的 sketch/profile 不存在 -> 该特征被静默跳过，几何缺一块
-    """
     problems = []
     for eid, e in ents.items():
         if not (isinstance(e, dict) and e.get("type") == "ExtrudeFeature"):
@@ -86,7 +79,6 @@ def check_extrudes(ents):
     return problems
 
 def check_file(path, only_used=False):
-    """返回 (是否OK, 问题描述列表)"""
     with open(path, encoding="utf-8") as fp:
         data = json.load(fp)
 

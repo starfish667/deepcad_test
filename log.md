@@ -96,7 +96,7 @@ MAX_N_CURVES = 15 # maximum number of curves per loop
 MAX_TOTAL_LEN = 60 # maximum cad sequence length
 ```
 超过 60 的数据全部被清理掉了！
-所以我用ai写了个筛选器，筛掉不符合的
+所以我写了个筛选器，筛掉不符合的
 
 ## 10.2
 以下内容为 ai 生成：
