@@ -24,3 +24,7 @@ env/
 .idea/
 .DS_Store
 Thumbs.db
+
+#
+m1_sample/
+m1_sample_step/

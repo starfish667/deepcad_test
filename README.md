@@ -10,7 +10,7 @@ conda env create -f environment.yml
 conda activate deepcad
 ```
 
-### 获取官方代码（本仓库不包含）
+### 获取官方代码
 
 官方 DeepCAD 代码仓库不随本仓库分发，需自行克隆到当前目录：
 
@@ -40,3 +40,9 @@ tar xzf data/cad_vec.tar.gz  -C data/
 mkdir -p proj_log && mv pretrained proj_log/pretrained
 ```
 
+### 获取真实点云
+
+```bash
+cd dataset
+python json2pc.py --only_test
+```
