@@ -12,4 +12,4 @@ $ grep -n "\"profiles\": \[\]"  m1_sample/00000076.json
 
 核查发现还真是
 
-运行 show.py 出现 segfault，依旧依靠 ai 查 segfault 发现调用了 tkinter 然后摸到了 qt，
+运行 show.py 出现 segfault，依旧依靠 ai 查 segfault 发现调用了 tkinter 然后摸到了 qt，安装 qt 后正常显示图形

@@ -26,5 +26,5 @@ env/
 Thumbs.db
 
 #
-m1_sample/
-m1_sample_step/
+m1/m1_sample/
+m1/m1_sample_step/
