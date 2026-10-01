@@ -4,3 +4,6 @@
 - ai 辅助解析 json 中 Extrude 的参数以及 reference vector 和 reference plane
 - ai 提供 numpy，csv 指导
 - ai 写了 m1 中数据清洗程序
+- ai 核对 json2vec 的筛选链路，确认那段长度上限过滤实际未触发，真正的筛选发生在生成划分名单时
+- ai 重写 m1 的命令统计程序，把统计口径对齐论文与 cad_vec：补上 SOL、Extrude 按剖面引用数计
+- ai 写了 m1 的 README（环境配置 + 目录/脚本说明 + 全流程命令）

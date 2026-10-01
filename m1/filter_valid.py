@@ -16,14 +16,11 @@ Curve = gen_seq.Curve
 close = gen_seq._close
 reorder_loop = gen_seq.reorder_loop
 
-
 def _norm(a):
     return a % (2 * math.pi)
 
-
 def _ang(p, c):
     return _norm(math.atan2(p[1] - c[1], p[0] - c[0]))
-
 
 def check_loop(curves):
     """返回 [] 表示没问题，否则返回问题列表"""
@@ -37,13 +34,11 @@ def check_loop(curves):
     if errs:
         return errs
 
-    # 1) 首尾相接
     n = len(curves)
     for i in range(n):
         if not close(curves[i].end, curves[(i + 1) % n].start):
             errs.append("第{}->{}条断链".format(i, (i + 1) % n))
 
-    # 2) 圆弧 mid 是否落在 start->end 之间
     for i, cv in enumerate(curves):
         if cv.type != "Arc3D" or cv.mid is None:
             continue
@@ -55,7 +50,6 @@ def check_loop(curves):
             errs.append("第{}条弧 span={:.1f}° 与 end_angle={:.1f}° 不符"
                         .format(i, math.degrees(got), math.degrees(want)))
     return errs
-
 
 def check_extrudes(ents):
     """检查拉伸特征是否引用了有效剖面
@@ -90,7 +84,6 @@ def check_extrudes(ents):
             if not loops or any(not L.get("profile_curves") for L in loops):
                 problems.append("'{}': 剖面 {} 没有曲线".format(name, pid))
     return problems
-
 
 def check_file(path, only_used=False):
     """返回 (是否OK, 问题描述列表)"""
@@ -127,7 +120,6 @@ def check_file(path, only_used=False):
         problems.append("没有任何剖面")
     return (len(problems) == 0), problems
 
-
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--src", default=os.path.join(HERE, "m1_sample"))
@@ -135,6 +127,8 @@ def main():
     ap.add_argument("--verbose", action="store_true")
     ap.add_argument("--only-used", action="store_true",
                     help="只检查被 Extrude 引用到的剖面（默认检查全部）")
+    ap.add_argument("--max", type=int, default=None,
+                    help="按文件名排序最多保留前 N 个（默认全部）")
     args = ap.parse_args()
 
     files = sorted(glob.glob(os.path.join(args.src, "*.json")))
@@ -152,18 +146,27 @@ def main():
             ok, problems = False, ["读取失败: {}: {}".format(type(exc).__name__, exc)]
         name = os.path.basename(f)
         if ok:
-            ok_list.append(name)
-            shutil.copy2(f, os.path.join(args.dst, name))
-            if args.verbose:
-                print("OK   {}".format(name))
+            ok_list.append((name, f))
         else:
             bad_list.append((name, problems))
-            if args.verbose:
-                print("BAD  {}   {}".format(name, "; ".join(problems[:3])))
+
+    ok_list.sort()
+    n_valid = len(ok_list)
+    if args.max is not None:
+        ok_list = ok_list[:args.max]
+
+    for name, f in ok_list:
+        shutil.copy2(f, os.path.join(args.dst, name))
+        if args.verbose:
+            print("OK   {}".format(name))
+    for name, problems in bad_list:
+        if args.verbose:
+            print("BAD  {}   {}".format(name, "; ".join(problems[:3])))
 
     print()
-    print("共 {} 个文件:  通过 {}  剔除 {}".format(len(files), len(ok_list), len(bad_list)))
-    print("通过的已拷贝到: {}".format(args.dst))
+    print("共 {} 个文件:  有效 {}  剔除 {}  实际保留 {}".format(
+        len(files), n_valid, len(bad_list), len(ok_list)))
+    print("保留的已拷贝到: {}".format(args.dst))
     if bad_list:
         print()
         print("被剔除的文件（原因）:")
@@ -171,7 +174,6 @@ def main():
             print("  {}  <- {}".format(name, problems[0]))
             for p in problems[1:3]:
                 print("      {}".format(p))
-
 
 if __name__ == "__main__":
     main()
