@@ -21,6 +21,10 @@ m1/00000070.json
 m2/m2_data/
 m2/results/
 m2/results_step/
+m3/m3_data/
+m3/results/
+m3/results_step/
+m3/m3.csv
 
 # ---- Python ----
 __pycache__/

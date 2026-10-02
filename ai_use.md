@@ -7,8 +7,13 @@
 - ai 重写 m1 的命令统计程序，把统计口径对齐论文与 cad_vec：补上 SOL Extrude 按剖面引用数计
 - ai 写了 m1 的 README（环境配置 + 目录/脚本说明 + 全流程命令）
 - ai 解释 `train_val_test_split.json` 的三个键和 id 的目录前缀
-- ai 写了 m2 的 README
-- ai 生成 log.md 的 M2 段落（已标注）
+- ai 写了 m2 / m3 的 README 段落
+- ai 生成 log.md 的 M2 / M3 段落（已标注）
 - ai 复核 3 个 STEP 失败的原因
 - ai 精简 README、把 m1 流程并进 m1.sh、整理 .gitignore
 - ai 验证 filter_valid.py 的校验在样本上从未触发、与 grep 等价，据此改成 grep -L 并删掉该文件
+- ai 讲清 h5 的结构与 17 列含义，以及 `gt_vec`/`out_vec` 的区别
+- ai 扫出 export2step 崩溃对应的那个文件（`vec2CADsolid` 返回 None）
+- ai 核对 ACC 口径，并一起排查 m3.py 的累加、`np.sort`、成功判据（空实体）几处问题
+- ai 说明缺失 CD 怎么处理（排除、报分母，不填 0 也不填大数）
+- ai 查清 pythonocc 的 deprecation 警告为何普通 filter 压不掉
