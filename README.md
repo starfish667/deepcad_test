@@ -78,8 +78,6 @@ cd m1
 ./m1.sh
 ```
 
-`m1.sh` 清洗用 `grep -L` 剔掉 `profiles` 为空的文件、保留 20 个，再调 `analyze.py`（两份统计 CSV）、`gen_seq.py`（生成 `cmd_seq.md`）。这些生成物都被 `.gitignore` 忽略，跑一遍即可重建。
-
 3 张 `.png` 是 `show.sh` 手动截图，需要图形界面（纯 ssh 跑不了），不在 `m1.sh` 里：
 
 ```bash
