@@ -174,3 +174,23 @@ Parallel(...)(delayed(process_one)(x) for x in all_data["train"])
 `seq_len` 536 → 186，说明不筛的话数字会被超限样本撑得很大，和论文对不上。
 
 到此为止为 ai 生成内容
+
+开始做 M2，发现 `DeepCAD/data/train_val_test_split.json` 其实已经选好了用于训练的样本了，直接抽取一百个作为样本重建就可以了
+
+以下内容为 ai 生成：
+
+今天只做 M2，M3 和 PPT 明天再说，先完成再完美。
+
+方案上纠结过改官方 `test.py` 还是自己写脚本。后来自己翻 DeepCAD 源码翻到了 `dataset/cad_dataset.py`，又摸到 `config/configAE.py` 里的 `--data_root`，发现数据根能整个换掉，那就用最省事的路：自制数据根 + `--data_root`，官方代码一行不改。
+
+官方的 `train_val_test_split.json` 有三个键，我只要 `test`。id 是 `0001/00012459` 这种带目录前缀的，这点问了下 ai 确认。
+
+写 `m2.sh` 的时候 bash 不熟，第一版不对，让 ai 帮我看语法（grep 正则、`if`/`then`、`(( ))` 算术、管道子 shell）。`get_sample.py` 用 `random.Random(114514)` 固定种子抽 100 个，stdout 打 id 让 `m2.sh` 去拷 h5，stdout 接管道也是问的 ai。
+
+跑完 `test.py` 拿到 100 个 h5，`export2step` 之后我第一时间 `wc` 了一下，只有 97 个 STEP，少了 `00231240`、`00770426`、`00823562`。让 ai 复核了下原因：前两个连真值都建不出，只有 `00823562` 是真的模型失败。
+
+最后让 ai 把这几个 md 补上。
+
+M1 的 filter_valid.py 有 172 行，但实测真正起作用的只有「Extrude 的 profiles 不能为空」一条，那段环闭合 / 弧 end_angle 的校验在 30 个样本上一次都没触发。它本来就等价于 grep，于是换成 `grep -L`，删掉 filter_valid.py，清洗也并进 m1.sh。
+
+到此为止为 ai 生成内容

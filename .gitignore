@@ -10,6 +10,17 @@ proj_log/
 *.h5
 *.step
 *.stp
+m1/m1_sample/
+m1/m1_sample_cleaned/
+m1/m1_all.csv
+m1/m1_lt60.csv
+m1/cmd_seq.md
+m1/00000061.json
+m1/00000069.json
+m1/00000070.json
+m2/m2_data/
+m2/results/
+m2/results_step/
 
 # ---- Python ----
 __pycache__/
@@ -24,3 +35,4 @@ env/
 .idea/
 .DS_Store
 Thumbs.db
+.~lock*

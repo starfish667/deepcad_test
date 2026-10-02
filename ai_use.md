@@ -3,7 +3,12 @@
 - ai debug show.py 的 segfault
 - ai 辅助解析 json 中 Extrude 的参数以及 reference vector 和 reference plane
 - ai 提供 numpy，csv 指导
-- ai 写了 m1 中数据清洗程序
 - ai 核对 json2vec 的筛选链路，确认那段长度上限过滤实际未触发，真正的筛选发生在生成划分名单时
-- ai 重写 m1 的命令统计程序，把统计口径对齐论文与 cad_vec：补上 SOL、Extrude 按剖面引用数计
+- ai 重写 m1 的命令统计程序，把统计口径对齐论文与 cad_vec：补上 SOL Extrude 按剖面引用数计
 - ai 写了 m1 的 README（环境配置 + 目录/脚本说明 + 全流程命令）
+- ai 解释 `train_val_test_split.json` 的三个键和 id 的目录前缀
+- ai 写了 m2 的 README
+- ai 生成 log.md 的 M2 段落（已标注）
+- ai 复核 3 个 STEP 失败的原因
+- ai 精简 README、把 m1 流程并进 m1.sh、整理 .gitignore
+- ai 验证 filter_valid.py 的校验在样本上从未触发、与 grep 等价，据此改成 grep -L 并删掉该文件

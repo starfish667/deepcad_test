@@ -1,16 +1,16 @@
-### 环境
+# 环境
  - OS: Ubuntu 26.04
  - GPU: NVIDIA RTX 4060 Laptop
  - NVIDIA 驱动 595.91.07
  - CUDA 12.8
 
-### 安装
+# 安装
 ```bash
 conda env create -f environment.yml
 conda activate deepcad
 ```
 
-### 获取官方代码
+# 获取官方代码
 
 官方 DeepCAD 代码仓库不随本仓库分发，需自行克隆到当前目录：
 
@@ -21,7 +21,7 @@ git clone https://github.com/rundiwu/DeepCAD.git
 - 论文：https://arxiv.org/abs/2105.09492
 - 数据集与预训练权重：见下方，或官方仓库 README
 
-### 数据与预训练权重
+# 数据与预训练权重
 
 官方仓库不包含数据，需自行下载解压。
 
@@ -40,7 +40,7 @@ tar xzf data/cad_vec.tar.gz  -C data/
 mkdir -p proj_log && mv pretrained proj_log/pretrained
 ```
 
-### 获取真实点云
+# 获取真实点云
 
 ```bash
 cd dataset
@@ -53,9 +53,9 @@ python json2pc.py --only_test
 
 | 路径 | 内容 |
 | --- | --- |
-| `m1_sample/` | 原始样本 30 个（从 `DeepCAD/data/cad_json/0000` 抽取） |
+| `m1_sample/` | 原始样本 30 个（`m1.sh` 生成） |
 | `m1_sample_cleaned/` | 清洗后保留的 20 个（统计只用这个目录） |
-| `m1_sample_step/` | `m1_sample/` 导出的 STEP 文件 |
+| `m1_sample_step/` | `m1_sample/` 导出的 STEP |
 | `00000061.json` / `.png` / `.step` | 挑出来讲解的 3 个零件 |
 | `00000069.json` / `.png` / `.step` | 同上 |
 | `00000070.json` / `.png` / `.step` | 同上 |
@@ -68,94 +68,49 @@ python json2pc.py --only_test
 
 | 脚本 | 作用 | 需要 deepcad 环境 |
 | --- | --- | --- |
-| `m1.sh` | 取 30 个样本，并导出 STEP | 是 |
-| `show.sh` | 弹窗显示 3D 模型（手动截图） | 是 |
-| `filter_valid.py` | 清洗坏文件 → `m1_sample_cleaned/` | 否 |
-| `gen_seq.py` | 生成 `cmd_seq.md` | 否 |
-| `analyze.py` | 生成两份统计 CSV | 否 |
+| `m1.sh` | 全流程：取样 → 导 STEP → 清洗 → 统计 → 生成 `cmd_seq.md` | 是 |
+| `show.sh` | 弹窗显示 3D 模型，手动截图成 `.png` | 是 |
 
-## A. 统计流程（20 个样本）
+## 从零复现
 
 ```bash
 cd m1
-
-# 1) 取 30 个原始样本，并导出 STEP 到 m1_sample_step/
 ./m1.sh
-
-# 2) 清洗：剔掉「拉伸没有引用任何剖面」的坏文件，按文件名排序保留前 20 个
-python3 filter_valid.py --max 20
-
-# 3) 输出命令统计
-python3 analyze.py
 ```
 
-产物：
+`m1.sh` 清洗用 `grep -L` 剔掉 `profiles` 为空的文件、保留 20 个，再调 `analyze.py`（两份统计 CSV）、`gen_seq.py`（生成 `cmd_seq.md`）。这些生成物都被 `.gitignore` 忽略，跑一遍即可重建。
 
-| 产物 | 内容 |
-| --- | --- |
-| `m1_sample/` | 30 个原始 json |
-| `m1_sample_step/` | 26 个 STEP |
-| `m1_sample_cleaned/` | 清洗后保留的 20 个 json |
-| `m1_all.csv` | 20 行命令统计 |
-| `m1_lt60.csv` | 17 行命令统计 |
-
-> `00000076` / `00000175` / `00000176` / `00000177` 这 4 个 `profiles` 为空，建不出实体，所以 STEP 只有 26 个；`00000073` 能建出实体但几何不对（有个拉伸是空的，被静默跳过），仍会被清洗掉。
-
-## B. 3 个讲解样本
+3 张 `.png` 是 `show.sh` 手动截图，需要图形界面（纯 ssh 跑不了），不在 `m1.sh` 里：
 
 ```bash
-cd m1
-
-# 0) 从样本里挑 3 个放到当前目录
-cp m1_sample/00000061.json m1_sample/00000069.json m1_sample/00000070.json .
-
-# 1) 弹窗显示 3D 模型，手动截图存成 00000061.png / 00000069.png / 00000070.png
-#    需要图形界面，无头环境（纯 ssh）跑不起来
 conda run -n deepcad python ../DeepCAD/utils/show.py --src . --form json --num 3
-
-# 2) 导出 STEP
-conda run -n deepcad python ../DeepCAD/utils/export2step.py --src . --form json --num -1 -o .
-
-# 3) 生成命令序列
-python3 gen_seq.py
 ```
 
-产物：`cmd_seq.md`、`00000061/69/70.png`、`00000061/69/70.step`
+# M2 CAD 自动重建
 
-## C. 从零复现
+## 目录
+
+| 路径 | 内容 |
+| --- | --- |
+| `m2_data/train_val_test_split.json` | 固定 100 个样本的名单 |
+| `m2_data/cad_vec/` | 100 个输入 h5 |
+| `results/` | 100 个重建结果 `*_vec.h5` |
+| `results_step/` | 导出的 STEP，97 个 |
+
+## 脚本
+
+| 脚本 | 作用 | 需要 deepcad 环境 |
+| --- | --- | --- |
+| `get_sample.py` | 从官方 `test` 名单抽 100 个（种子 114514），写名单并打印 id | 否 |
+| `m2.sh` | 抽样本 → 拷 h5 → 官方推理 → 导出 STEP | 是 |
 
 ```bash
-cd m1
-./m1.sh
-python3 filter_valid.py --max 20
-python3 analyze.py
-cp m1_sample/00000061.json m1_sample/00000069.json m1_sample/00000070.json .
-python3 gen_seq.py
+cd m2 && ./m2.sh
 ```
 
-## 结果
+## 结论
 
-`analyze.py` 的口径与论文 / `cad_vec` 一致：每个「拉伸 → 剖面引用 → 环」记 1 个 `SOL` 加该环的曲线数，每个「拉伸 → 剖面引用」记 1 个 `extrude`。
-
-```
-seq_len = line + arc + circle + sol + extrude
-```
-
-| | 样本数 | seq_len | line | arc | circle | sol | extrude |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| `m1_all.csv` | 20 | 536 | 242 | 92 | 39 | 97 | 66 |
-| `m1_lt60.csv` | 17 | 186 | 57 | 42 | 19 | 39 | 29 |
-
-被四个上限筛掉的 3 个：
-
-| 文件 | 超限原因 |
-| --- | --- |
-| `00000062` | `ext=26>10`、`curves=19>15`、`seq_len=204>59` |
-| `00000069` | `seq_len=90>59` |
-| `00000137` | `loops=18>6` |
-
-清洗掉的 5 个（`profiles` 为空，无法建实体）：
-
-```
-00000073  00000076  00000175  00000176  00000177
-```
+- 用官方 `test.py`，靠 `--data_root` 指向 `m2_data/` 只跑自选 100 个，不改官方源码
+- 100 个全部推理成功，导出 STEP 97 个
+- 3 个建不出：`00231240`、`00770426` 真值本身就建不出；`00823562` 是模型失败
+- 自检（非 M3 正式指标）：`ACC_cmd 99.19%`、`ACC_param 97.17%`
