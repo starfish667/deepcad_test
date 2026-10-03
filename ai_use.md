@@ -21,3 +21,4 @@
 - ai 提醒 100 个样本按现有阈值分组后 long 只剩 1 个
 - ai 查清 pythonocc 的 deprecation 警告为何普通 filter 压不掉
 - ai 验收重构后的 m3.py（独立复算 ACC 一致，检查 CD/分组/缺失处理）
+- ai 制作 ppt

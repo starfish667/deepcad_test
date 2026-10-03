@@ -224,3 +224,5 @@ pythonocc 那条 deprecation 警告压不掉，翻了下是它 `@deprecated` 装
 发现原来的 `m3.py` 效率太低，决定重构，用 numpy 和 Parallel
 
 重构完成，调试了一下差不多能用，让 ai 验收了一下
+
+让 ai 做了 ppt，我改了改
