@@ -9,6 +9,7 @@ dependencies:
   - pip
   - numpy=1.23.5
   - scipy
+  - pandas
   - h5py
   - trimesh
   - matplotlib

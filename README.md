@@ -129,17 +129,17 @@ cd m2 && ./m2.sh
 | --- | --- | --- |
 | `get_sample.py n` | 从官方 `test` 抽 n 个（种子 114514），写名单并打印 id | 否 |
 | `json2pc.py` | 官方点云脚本的副本，`DATA_ROOT` 指到 `m3_data` | 是 |
-| `m3.py` | 读 `results/` 算指标，写 `m3.csv` | 是 |
-| `m3.sh n` | 抽样本 → 生成真值点云 → 推理 → 评价 | 是 |
+| `m3.py n_points` | 读 `results/` 算指标，写 `m3.csv` | 是 |
+| `m3.sh n n_points` | 抽样本 → 生成真值点云 → 推理 → 评价 | 是 |
 
 ## 流程
 
 ```bash
 cd m3
-./m3.sh 100
+./m3.sh 1000 2000
 ```
 
-100 可换成实际需要的样本量
+第一个参数是样本数，第二个是每个模型采的点数（Chamfer Distance 用）
 
 ## 指标
 
@@ -153,5 +153,7 @@ cd m3
 
 ## 结论
 
-- ACC 与成功率已出，见 `m3.csv`
-- CD 的 mean / trimmed / median 还在实现，`m3.py` 里目前是 `append(0)` 占位
+- 三组趋势一致：短最好、长最差（ACC、成功率、CD 都是）
+- 1000 个样本的结果见 `m3.csv`
+- CD 只对能算出 CD 的样本统计，失败样本不参与；表里的 `count` 是样本数，不是 CD 的分母
+- CD 的覆盖率、5 个代表案例放在报告 / PPT 里讲

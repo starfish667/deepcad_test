@@ -218,3 +218,9 @@ CD 打算按官方口径：只对能算的样本统计 mean / 去掉最大最小
 pythonocc 那条 deprecation 警告压不掉，翻了下是它 `@deprecated` 装饰器里 `simplefilter("always")` 又把过滤器清空，普通 filter 无效。
 
 到此为止为 ai 生成内容
+
+## 10.3
+
+发现原来的 `m3.py` 效率太低，决定重构，用 numpy 和 Parallel
+
+重构完成，调试了一下差不多能用，让 ai 验收了一下

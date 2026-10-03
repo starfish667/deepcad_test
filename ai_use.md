@@ -16,4 +16,8 @@
 - ai 扫出 export2step 崩溃对应的那个文件（`vec2CADsolid` 返回 None）
 - ai 核对 ACC 口径，并一起排查 m3.py 的累加、`np.sort`、成功判据（空实体）几处问题
 - ai 说明缺失 CD 怎么处理（排除、报分母，不填 0 也不填大数）
+- ai 核实 pc_cad 只出 8037 个的原因（15 个真值建不出：5 个抛异常 + 10 个空实体）
+- ai 全量统计真值/重建的失败数（15 / 265）与可算 CD 的样本数（7776）
+- ai 提醒 100 个样本按现有阈值分组后 long 只剩 1 个
 - ai 查清 pythonocc 的 deprecation 警告为何普通 filter 压不掉
+- ai 验收重构后的 m3.py（独立复算 ACC 一致，检查 CD/分组/缺失处理）

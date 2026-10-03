@@ -19,5 +19,5 @@ conda run -n deepcad python ../DeepCAD/test.py --exp_name pretrained --mode rec 
 # conda run -n deepcad python ../DeepCAD/utils/export2step.py --src results --num -1
 echo "reconstruction accomplished"
 
-conda run -n deepcad python m3.py
+conda run -n deepcad python m3.py $2
 echo "evaluation accomplished"
