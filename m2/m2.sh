@@ -1,8 +1,6 @@
 mkdir -p m2_data
 conda run -n deepcad python get_sample.py | while read it; do
-IFS='/' read -ra arr <<< "${it}"
-dir=${arr[0]}
-file=${arr[1]}
+dir=${it%%/*}
 mkdir -p m2_data/cad_vec/$dir
 cp ../DeepCAD/data/cad_vec/$it.h5 m2_data/cad_vec/$dir/
 done
